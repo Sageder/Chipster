@@ -36,15 +36,16 @@ struct MenuView: View {
                 if (item.isPlacable) {
                     item.shape()
                         .stroke(lineWidth: 2.5)
-                        .frame(width: size, height: item == .line ? size / 4 : size)
+                        .frame(width: size, height: size)
                         .foregroundColor(color)
                 }
                 
-                if (item == .move) {
-                    Image(systemName: "arrow.up.and.down.and.arrow.left.and.right")
+                if (item == .rotate) {
+                    Image(systemName: "rotate.right")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: size, height: size)
+                        .offset(y: -3)
                         .foregroundColor(color)
                 }
                 
