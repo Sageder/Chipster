@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct GateWrapper: Identifiable {
+    static var size: CGFloat = 75
+    
     let id = UUID()
     let type: Gate
+    let offset: CGSize
     
     var in0: Bool = false
     var in1: Bool = false
@@ -30,19 +33,45 @@ struct GateWrapper: Identifiable {
     
     @ViewBuilder
     func gate()->some View {
-        switch (type) {
-        case .not:
-            NotShape()
-                .frame(width: 100, height: 100)
-        case .and:
-            AndShape()
-                .frame(width: 100, height: 100)
-        case .or:
-            OrShape()
-                .frame(width: 100, height: 100)
-        case .xor:
-            XorShape()
-                .frame(width: 100, height: 100)
+        HStack {
+            VStack(spacing: 25) {
+                GateIn()
+                
+                if usesIn1 {
+                    GateIn()
+                }
+            }
+            
+            switch (type) {
+            case .not:
+                NotShape()
+                    .stroke(lineWidth: 2.5)
+                    .frame(width: GateWrapper.size,
+                           height:  GateWrapper.size)
+            case .and:
+                AndShape()
+                    .stroke(lineWidth: 2.5)
+                    .frame(width: GateWrapper.size,
+                           height:  GateWrapper.size)
+            case .or:
+                OrShape()
+                    .stroke(lineWidth: 2.5)
+                    .frame(width: GateWrapper.size,
+                           height:  GateWrapper.size)
+            case .xor:
+                XorShape()
+                    .stroke(lineWidth: 2.5)
+                    .frame(width: GateWrapper.size,
+                           height:  GateWrapper.size)
+            }
+            
+            GateOut()
         }
+    }
+}
+
+struct GateWrapper_Previews: PreviewProvider {
+    static var previews: some View {
+        GateWrapper(type: .not, offset: .zero).gate()
     }
 }
