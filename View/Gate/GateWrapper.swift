@@ -7,11 +7,31 @@ struct GateWrapper: Identifiable {
     let type: Gate
     let offset: CGSize
     
+    var rotation: Angle = .zero
+    
     var in0: Bool = false
     var in1: Bool = false
     
+    var usesIn0: Bool {
+        if type == .in {
+            return false
+        }
+        
+        return true
+    }
+    
     var usesIn1: Bool {
-        if (type == .not) {
+        if (type == .not ||
+            type == .in ||
+            type == .out) {
+            return false
+        }
+        
+        return true
+    }
+    
+    var usesOut: Bool {
+        if type == .out {
             return false
         }
         
@@ -20,6 +40,10 @@ struct GateWrapper: Identifiable {
     
     var out: Bool {
         switch (type) {
+        case .in:
+            return in0
+        case .out:
+            return in0
         case .not:
             return !in0
         case .and:
@@ -35,7 +59,9 @@ struct GateWrapper: Identifiable {
     func gate()->some View {
         HStack {
             VStack(spacing: 25) {
-                GateIn()
+                if usesIn0 {
+                    GateIn()
+                }
                 
                 if usesIn1 {
                     GateIn()
@@ -43,6 +69,16 @@ struct GateWrapper: Identifiable {
             }
             
             switch (type) {
+            case .in:
+                InShape()
+                    .stroke(lineWidth: 2.5)
+                    .frame(width: GateWrapper.size,
+                           height:  GateWrapper.size)
+            case .out:
+                OutShape()
+                    .stroke(lineWidth: 2.5)
+                    .frame(width: GateWrapper.size,
+                           height:  GateWrapper.size)
             case .not:
                 NotShape()
                     .stroke(lineWidth: 2.5)
@@ -65,8 +101,11 @@ struct GateWrapper: Identifiable {
                            height:  GateWrapper.size)
             }
             
-            GateOut()
+            if usesOut {
+                GateOut()
+            }
         }
+        .rotationEffect(rotation)
     }
 }
 

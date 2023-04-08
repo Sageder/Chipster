@@ -1,6 +1,8 @@
 import SwiftUI
 
 enum Gate {
+    case `in`
+    case out
     case not
     case and
     case or
@@ -8,6 +10,10 @@ enum Gate {
     
     static func from(item: MenuItem)->Gate {
         switch (item) {
+        case .in:
+            return .in
+        case .out:
+            return .out
         case .not:
             return .not
         case .and:
@@ -16,9 +22,6 @@ enum Gate {
             return .or
         case .xor:
             return .xor
-        case .line:
-            // TODO: impliment
-            return .not
         default:
             assertionFailure("Can't translate MenuItem to Gate")
             return .not
