@@ -13,14 +13,20 @@ struct CanvasView: View {
                 ForEach(canvasModel.gates) { gate in
                     gate.gate()
                         .offset(gate.offset)
+                        .modifier(DragModifier())
                         .onTapGesture {
                             canvasModel.setCur(gate)
+                            
+                            if menuModel.cur == .rotate {
+                                withAnimation {
+                                    canvasModel.rotateGate()
+                                }
+                            }
                             
                             if menuModel.cur == .erase {
                                 canvasModel.removeGate()
                             }
                         }
-                        .modifier(DragModifier())
                 }
             }
             .contentShape(Rectangle())

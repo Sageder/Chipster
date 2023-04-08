@@ -1,12 +1,13 @@
 import SwiftUI
 
 enum MenuItem: String, Identifiable {
-    case line = "Line"
+    case `in` = "In"
+    case out = "Out"
     case not = "Not"
     case and = "And"
     case or = "Or"
     case xor = "Xor"
-    case move = "Move"
+    case rotate = "Rotate"
     case erase = "Erase"
     
     var id: String {
@@ -15,8 +16,10 @@ enum MenuItem: String, Identifiable {
 
     func shape()->AnyShape { 
         switch self {
-        case .line:
-            return AnyShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+        case .in:
+            return AnyShape(InShape())
+        case .out:
+            return AnyShape(OutShape())
         case .not:
             return AnyShape(NotShape())
         case .and:
@@ -32,7 +35,8 @@ enum MenuItem: String, Identifiable {
     }
     
     var isPlacable: Bool {
-        return self == .line ||
+        return self == .in ||
+            self == .out ||
             self == .not ||
             self == .and ||
             self == .or ||
@@ -41,7 +45,8 @@ enum MenuItem: String, Identifiable {
     
     static func placeables()->[MenuItem] {
         return [
-            .line,
+            .in,
+            .out,
             .not,
             .and,
             .or,
@@ -50,20 +55,20 @@ enum MenuItem: String, Identifiable {
     }
     
     var isActionable: Bool {
-        return self == .move ||
+        return self == .rotate ||
             self == .erase
     }
     
     static func actionables()->[MenuItem] {
         return [
-            .move,
+            .rotate,
             .erase
         ]
     }
 }
 
 class MenuModel: ObservableObject {
-    @Published var cur: MenuItem = .line
+    @Published var cur: MenuItem = .in
     
     init() {}
 }
