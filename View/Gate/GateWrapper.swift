@@ -1,11 +1,13 @@
 import SwiftUI
 
+typealias GateId = UUID
+
 struct GateWrapper: Identifiable, View {
     static var size: CGFloat = 75
     
     @EnvironmentObject var canvasModel: CanvasModel
     
-    let id = UUID()
+    let id: GateId = UUID()
     let type: Gate
     let offset: CGSize
     
@@ -61,11 +63,13 @@ struct GateWrapper: Identifiable, View {
         HStack {
             VStack(spacing: 25) {
                 if usesIn0 {
-                    GateIn()
+                    GateIn(parent: id,
+                           index: 0)
                 }
                 
                 if usesIn1 {
-                    GateIn()
+                    GateIn(parent: id,
+                           index: 1)
                 }
             }
             
@@ -103,7 +107,7 @@ struct GateWrapper: Identifiable, View {
             }
             
             if usesOut {
-                GateOut()
+                GateOut(parent: id)
             }
         }
         .rotationEffect(rotation)

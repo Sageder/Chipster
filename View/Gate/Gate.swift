@@ -32,7 +32,13 @@ enum Gate {
 struct GateIn: View {
     static var size: CGFloat = 15
     
-    @State var connected = false
+    @EnvironmentObject var canvasModel: CanvasModel
+    let parent: GateId
+    let index: Int
+    var connected: Bool {
+        return canvasModel.isConnectedIn(to: parent,
+                                         index: index)
+    }
     
     var body: some View {
         if (connected) {
@@ -46,6 +52,20 @@ struct GateIn: View {
                 .foregroundColor(Color.green)
                 .frame(width: GateIn.size,
                        height: GateIn.size)
+                .opacity(canvasModel.connecting ? 1 : 0)
+                .onTapGesture {
+                    if (!canvasModel.checkForIn()) {
+                        return
+                    }
+                    
+                    withAnimation {
+                        canvasModel.connectGates(from: canvasModel.fromConnection!,
+                                                 to: parent,
+                                                 toIndex: index)
+                    }
+                    
+                    canvasModel.resetConnection()
+                }
         }
     }
 }
@@ -53,7 +73,11 @@ struct GateIn: View {
 struct GateOut: View {
     static var size: CGFloat = 15
     
-    @State var connected = false
+    @EnvironmentObject var canvasModel: CanvasModel
+    let parent: GateId
+    var connected: Bool {
+        return canvasModel.isConnectedOut(to: parent)
+    }
     
     var body: some View {
         if (connected) {
@@ -67,13 +91,23 @@ struct GateOut: View {
                 .foregroundColor(Color.red)
                 .frame(width: GateIn.size,
                        height: GateIn.size)
+                .opacity(canvasModel.connecting ? canvasModel.fromConnection == parent ? 1 : 0 : 1)
+                .onTapGesture {
+                    canvasModel.setFromConnection(parent)
+                    
+                    withAnimation {
+                        canvasModel.connecting = true
+                    }
+                }
         }
     }
 }
 
+typealias ConnectionId = UUID
+
 struct GateConnection: Identifiable {
-    let id = UUID()
-    let from: UUID
-    let to: UUID
+    let id: ConnectionId = UUID()
+    let from: GateId
+    let to: GateId
     let toIndex: Int
 }
