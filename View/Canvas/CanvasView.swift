@@ -11,7 +11,7 @@ struct CanvasView: View {
                     .fill(.clear)
                 
                 ForEach(canvasModel.gates) { gate in
-                    gate.gate()
+                    gate
                         .offset(gate.offset)
                         .modifier(DragModifier())
                         .onTapGesture {
@@ -29,6 +29,7 @@ struct CanvasView: View {
                         }
                 }
             }
+            .environmentObject(canvasModel)
             .contentShape(Rectangle())
             .onTapGesture { gesture in
                 if (menuModel.cur.isPlacable) {

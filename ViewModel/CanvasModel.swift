@@ -3,6 +3,7 @@ import SwiftUI
 class CanvasModel: ObservableObject {
     @Published var gates: [GateWrapper] = []
     @Published var cur: UUID?
+    @Published var connections: [GateConnection] = []
     
     /// Returns -1 if cur wasn't found
     private func getIndexOfCur()->Int {
@@ -45,5 +46,16 @@ class CanvasModel: ObservableObject {
     
     func setCur(_ cur: GateWrapper) {
         self.cur = cur.id
+    }
+    
+    func gateWrapper(withId id: UUID)->GateWrapper? {
+        return gates.first { $0.id == id }
+    }
+    
+    func connectGates(from: UUID, to: UUID, toIndex: Int) {
+        let connection = GateConnection(from: from,
+                                        to: to,
+                                        toIndex: toIndex)
+        connections.append(connection)
     }
 }

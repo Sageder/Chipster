@@ -1,7 +1,9 @@
 import SwiftUI
 
-struct GateWrapper: Identifiable {
+struct GateWrapper: Identifiable, View {
     static var size: CGFloat = 75
+    
+    @EnvironmentObject var canvasModel: CanvasModel
     
     let id = UUID()
     let type: Gate
@@ -9,8 +11,8 @@ struct GateWrapper: Identifiable {
     
     var rotation: Angle = .zero
     
-    var in0: Bool = false
-    var in1: Bool = false
+    @State var in0: Bool = false
+    @State var in1: Bool = false
     
     var usesIn0: Bool {
         if type == .in {
@@ -55,8 +57,7 @@ struct GateWrapper: Identifiable {
         }
     }
     
-    @ViewBuilder
-    func gate()->some View {
+    var body: some View {
         HStack {
             VStack(spacing: 25) {
                 if usesIn0 {
@@ -111,6 +112,6 @@ struct GateWrapper: Identifiable {
 
 struct GateWrapper_Previews: PreviewProvider {
     static var previews: some View {
-        GateWrapper(type: .not, offset: .zero).gate()
+        GateWrapper(type: .not, offset: .zero)
     }
 }

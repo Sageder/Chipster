@@ -32,21 +32,48 @@ enum Gate {
 struct GateIn: View {
     static var size: CGFloat = 15
     
+    @State var connected = false
+    
     var body: some View {
-        Circle()
-            .fill(Color.green)
-            .frame(width: GateIn.size,
-                   height: GateIn.size)
+        if (connected) {
+            Circle()
+                .fill(Color.green)
+                .frame(width: GateIn.size,
+                       height: GateIn.size)
+        } else {
+            Circle()
+                .stroke(lineWidth: 2)
+                .foregroundColor(Color.green)
+                .frame(width: GateIn.size,
+                       height: GateIn.size)
+        }
     }
 }
 
 struct GateOut: View {
     static var size: CGFloat = 15
     
+    @State var connected = false
+    
     var body: some View {
-        Circle()
-            .fill(Color.red)
-            .frame(width: GateOut.size,
-                   height: GateOut.size)
+        if (connected) {
+            Circle()
+                .fill(Color.red)
+                .frame(width: GateIn.size,
+                       height: GateIn.size)
+        } else {
+            Circle()
+                .stroke(lineWidth: 2)
+                .foregroundColor(Color.red)
+                .frame(width: GateIn.size,
+                       height: GateIn.size)
+        }
     }
+}
+
+struct GateConnection: Identifiable {
+    let id = UUID()
+    let from: UUID
+    let to: UUID
+    let toIndex: Int
 }
