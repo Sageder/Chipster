@@ -13,7 +13,7 @@ struct CanvasView: View {
                 ForEach(canvasModel.gates) { gate in
                     gate
                         .offset(gate.offset)
-                        .modifier(DragModifier())
+                        .modifier(DragModifier(id: gate.id))
                         .onTapGesture {
                             canvasModel.setCur(gate)
                             

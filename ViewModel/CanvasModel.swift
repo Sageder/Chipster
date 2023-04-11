@@ -56,6 +56,16 @@ extension CanvasModel {
         return gates.first { $0.id == id }
     }
     
+    func setDragOffset(id: GateId, offset: CGPoint)->Bool {
+        let i = getIndexOfGate(id)
+        if (i == -1) {
+            return false
+        }
+        
+        gates[i].dragOffset = offset
+        return true
+    }
+    
     /// Returns -1 if gate wasn't found
     private func getIndexOfGate(_ id: GateId?)->Int {
         if (id == nil) {

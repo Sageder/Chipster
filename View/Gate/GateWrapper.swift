@@ -13,6 +13,8 @@ struct GateWrapper: Identifiable, View {
     
     var rotation: Angle = .zero
     
+    @State var dragOffset: CGPoint = .zero
+    
     @State var in0: Bool = false
     @State var in1: Bool = false
     
