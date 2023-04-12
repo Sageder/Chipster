@@ -28,6 +28,20 @@ struct CanvasView: View {
                             }
                         }
                 }
+                
+                ForEach(canvasModel.connections) { c in
+                    let startGate = canvasModel.getGate(id: c.from)
+                    let startOffset = startGate!.entireOffset
+                    let startPos = startOffset.pointFromOffset(geometry.size)
+                    
+                    let endGate = canvasModel.getGate(id: c.to)
+                    let endOffset = endGate!.entireOffset
+                    let endPos = endOffset.pointFromOffset(geometry.size)
+                    
+                    ConnectionShape(startPoint: startPos,
+                                    endPoint: endPos)
+                        .stroke(lineWidth: 1.5)
+                }
             }
             .environmentObject(canvasModel)
             .contentShape(Rectangle())

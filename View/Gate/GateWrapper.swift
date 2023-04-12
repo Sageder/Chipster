@@ -44,6 +44,13 @@ struct GateWrapper: Identifiable, View {
         return true
     }
     
+    var entireOffset: CGPoint {
+        var off = dragOffset
+        off.x += offset.width
+        off.y += offset.height
+        return off
+    }
+    
     var out: Bool {
         switch (type) {
         case .in:

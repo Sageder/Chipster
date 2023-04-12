@@ -102,12 +102,3 @@ struct GateOut: View {
         }
     }
 }
-
-typealias ConnectionId = UUID
-
-struct GateConnection: Identifiable {
-    let id: ConnectionId = UUID()
-    let from: GateId
-    let to: GateId
-    let toIndex: Int
-}
