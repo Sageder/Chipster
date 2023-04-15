@@ -38,7 +38,14 @@ struct CanvasView: View {
                                                              to: true,
                                                              toIndex: c.toIndex,
                                                              size: geometry.size))
-                        .stroke(lineWidth: 1.5)
+                        .stroke(lineWidth: 2)
+                        .onTapGesture {
+                            canvasModel.setCurConnection(c)
+                            
+                            if menuModel.cur == .erase {
+                                canvasModel.removeConnection()
+                            }
+                        }
                 }
             }
             .environmentObject(canvasModel)

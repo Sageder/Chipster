@@ -52,7 +52,7 @@ struct GateIn: View {
                 .foregroundColor(Color.green)
                 .frame(width: GateIn.size,
                        height: GateIn.size)
-                .opacity(canvasModel.connecting ? 1 : 0)
+                .opacity(canvasModel.connecting ? canvasModel.fromConnection == parent ? 0 : 1 : 0)
                 .onTapGesture {
                     if (!canvasModel.checkForIn()) {
                         return
