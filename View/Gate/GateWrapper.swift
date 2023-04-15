@@ -13,7 +13,7 @@ struct GateWrapper: Identifiable, View {
     
     var rotation: Angle = .zero
     
-    @State var dragOffset: CGPoint = .zero
+    @State var drag: DragModifier = .init()
     
     @State var in0: Bool = false
     @State var in1: Bool = false
@@ -42,13 +42,6 @@ struct GateWrapper: Identifiable, View {
         }
         
         return true
-    }
-    
-    var entireOffset: CGPoint {
-        var off = dragOffset
-        off.x += offset.width
-        off.y += offset.height
-        return off
     }
     
     var out: Bool {

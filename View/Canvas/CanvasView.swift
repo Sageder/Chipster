@@ -13,7 +13,7 @@ struct CanvasView: View {
                 ForEach(canvasModel.gates) { gate in
                     gate
                         .offset(gate.offset)
-                        .modifier(DragModifier(id: gate.id))
+                        .modifier(gate.drag)
                         .onTapGesture {
                             canvasModel.setCur(gate)
                             
@@ -30,16 +30,14 @@ struct CanvasView: View {
                 }
                 
                 ForEach(canvasModel.connections) { c in
-                    let startGate = canvasModel.getGate(id: c.from)
-                    let startOffset = startGate!.entireOffset
-                    let startPos = startOffset.pointFromOffset(geometry.size)
-                    
-                    let endGate = canvasModel.getGate(id: c.to)
-                    let endOffset = endGate!.entireOffset
-                    let endPos = endOffset.pointFromOffset(geometry.size)
-                    
-                    ConnectionShape(startPoint: startPos,
-                                    endPoint: endPos)
+                    ConnectionShape(start: canvasModel.gatePos(id: c.from,
+                                                               to: false,
+                                                               toIndex: nil,
+                                                               size: geometry.size),
+                                    end: canvasModel.gatePos(id: c.to,
+                                                             to: true,
+                                                             toIndex: c.toIndex,
+                                                             size: geometry.size))
                         .stroke(lineWidth: 1.5)
                 }
             }
