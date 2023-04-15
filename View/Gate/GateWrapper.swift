@@ -9,6 +9,7 @@ struct GateWrapper: Identifiable, View {
     
     let id: GateId = UUID()
     let type: Gate
+    let numOfType: Int
     let offset: CGSize
     
     var rotation: Angle = .zero
@@ -77,15 +78,24 @@ struct GateWrapper: Identifiable, View {
             
             switch (type) {
             case .in:
-                InShape()
-                    .stroke(lineWidth: 2.5)
-                    .frame(width: GateWrapper.size,
-                           height:  GateWrapper.size)
+                HStack {
+                    Text("In\(numOfType)")
+                        .font(.title3)
+                    
+                    InShape()
+                        .stroke(lineWidth: 2.5)
+                        .frame(width: GateWrapper.size,
+                               height:  GateWrapper.size)
+                }
             case .out:
-                OutShape()
-                    .stroke(lineWidth: 2.5)
-                    .frame(width: GateWrapper.size,
-                           height:  GateWrapper.size)
+                HStack {
+                    OutShape()
+                        .stroke(lineWidth: 2.5)
+                        .frame(width: GateWrapper.size,
+                               height:  GateWrapper.size)
+                    
+                    Text("Out\(numOfType)")
+                }
             case .not:
                 NotShape()
                     .stroke(lineWidth: 2.5)
@@ -118,6 +128,6 @@ struct GateWrapper: Identifiable, View {
 
 struct GateWrapper_Previews: PreviewProvider {
     static var previews: some View {
-        GateWrapper(type: .not, offset: .zero)
+        GateWrapper(type: .not, numOfType: 0, offset: .zero)
     }
 }

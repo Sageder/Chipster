@@ -22,6 +22,7 @@ extension CanvasModel {
     
     func addGate(_ type: Gate, offset: CGSize) {
         gates.append(GateWrapper(type: type,
+                                 numOfType: getGateTypeNum(type),
                                  offset: offset))
     }
     
@@ -73,6 +74,18 @@ extension CanvasModel {
                              to: to,
                              toIndex: toIndex)
         return off.pointFromOffset(size)
+    }
+    
+    func getGateTypeNum(_ type: Gate)->Int {
+        var i = 0;
+        
+        for gate in gates {
+            if gate.type == type {
+                i += 1
+            }
+        }
+        
+        return i
     }
     
     /// Returns -1 if gate wasn't found
