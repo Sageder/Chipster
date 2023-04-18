@@ -27,12 +27,12 @@ struct PageOne: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
                 
-                Text("They have different areas of the chip that have different use cases and \(Text("billions of second gen 5nm transistors").bold()).")
+                Text("They have different areas of the chip that serve different use cases and \(Text("billions of 2nd gen. 5nm transistors").bold()).")
                     .font(.title3)
                     .multilineTextAlignment(.center)
-                    .frame(width: 450)
+                    .frame(width: 500)
                 
-                Text("But on a basic level, they are just a lot of \(Text("logic circuits").bold()).")
+                Text("But at their core, they are composed of numerous \(Text("logic circuits").bold()) working in tandem.")
                     .font(.title3)
                     .multilineTextAlignment(.center)
                     .frame(width: 500)

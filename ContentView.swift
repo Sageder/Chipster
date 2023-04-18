@@ -15,3 +15,9 @@ struct ContentView: View {
         IntroView()
     }
 }
+
+struct ConentPreview_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}

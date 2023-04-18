@@ -62,16 +62,67 @@ struct PageTwo: View {
     
     @ViewBuilder
     func explainGate(_ gate: Gate)->some View {
-        VStack {
-            Text(gate.getName())
-                .font(.title)
-                .multilineTextAlignment(.center)
-                .padding(.bottom)
-            
+        VStack(spacing: 20) {
             GateWrapper(type: gate, numOfType: 0, offset: .zero)
                 .environmentObject(canvasModel)
+                .padding()
             
-            
+            switch (gate) {
+            case .in:
+                Text("The \(Text("IN").bold()) gate represents the input to a logic circuit. It can have one or more inputs, and it is the starting point for any logical operation.")
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+                
+                Text("(In0 indicates that it is the first in and therefore responsible for the first bit)")
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+            case .out:
+                Text("The \(Text("OUT").bold()) gate represents the output of a logic circuit. It can have one or more outputs, and it represents the final result of a logical operation.")
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+                
+                Text("(Out0 indicates that it is the first out and therefore responsible for the first bit)")
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+            case .not:
+                Text("The \(Text("NOT").bold()) gate (also called an inverter) takes a single input and produces the opposite value as output. If the input is a 0 (false), the output is a 1 (true), and vice versa.")
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+                
+                Text("(The green circle represents the input and the red one the output)")
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+            case .and:
+                Text("The \(Text("AND").bold()) gate takes two inputs and produces a single output that is true only if all inputs are true. If any input is false, the output is also false.")
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+                
+                Text("(The green circles represent the inputs and the red one the output)")
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+            case .or:
+                Text("The \(Text("OR").bold()) gate takes two or more inputs and produces a single output that is true if at least one input is true. If all inputs are false, the output is also false.")
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+                
+                Text("(The green circles represent the inputs and the red one the output)")
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+            case .xor:
+                Text("The \(Text("XOR").bold()) gate (short for \(Text("exclusive OR").bold())) takes two inputs and produces a single output that is true if exactly one input is true. If both inputs are false or both are true, the output is false.")
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+                
+                Text("(The green circles represent the inputs and the red one the output)")
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding()

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct IntroView: View {
     @StateObject var introModel: IntroModel = .init()
-    @State var selection = 0
+    @State var selection: Int = 0
     
     var body: some View {
         TabView(selection: $selection) {
@@ -36,6 +36,18 @@ struct IntroView: View {
                     }
                 } label: {
                     Image(systemName: "arrow.right")
+                        .font(.title)
+                        .foregroundColor(.black)
+                        .padding(30)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+            } else {
+                Button {
+                    withAnimation {
+                        // TODO
+                    }
+                } label: {
+                   Text("Start 🚀")
                         .font(.title)
                         .foregroundColor(.black)
                         .padding(30)

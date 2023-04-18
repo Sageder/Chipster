@@ -82,7 +82,7 @@ struct GateIn: View {
                        height: GateIn.size)
                 .opacity(canvasModel.showAllDebug ? 1 : canvasModel.connecting ? canvasModel.fromConnection == parent ? 0 : 1 : 0)
                 .onTapGesture {
-                    if (!canvasModel.checkForIn()) {
+                    if (!canvasModel.checkForIn() && canvasModel.showAllDebug) {
                         return
                     }
                     
@@ -121,6 +121,10 @@ struct GateOut: View {
                        height: GateIn.size)
                 .opacity(canvasModel.showAllDebug ? 1 : canvasModel.connecting ? canvasModel.fromConnection == parent ? 1 : 0 : 1)
                 .onTapGesture {
+                    if (canvasModel.showAllDebug) {
+                        return
+                    }
+                    
                     canvasModel.setFromConnection(parent)
                     
                     withAnimation {
