@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct IntroView: View {
-    @StateObject var introModel: IntroModel = .init()
+    @ObservedObject var introModel: IntroModel
     @State var selection: Int = 0
     
     var body: some View {
@@ -47,7 +47,9 @@ struct IntroView: View {
             } else {
                 Button {
                     withAnimation {
-                        // TODO
+                        withAnimation {
+                            introModel.start = true
+                        }
                     }
                 } label: {
                    Text("Start 🚀")
@@ -63,6 +65,6 @@ struct IntroView: View {
 
 struct IntroView_Previews: PreviewProvider {
     static var previews: some View {
-        IntroView()
+        IntroView(introModel: IntroModel())
     }
 }
