@@ -71,4 +71,8 @@ class MenuModel: ObservableObject {
     @Published var cur: MenuItem = .in
     
     init() {}
+    
+    init (cur: MenuItem) {
+        self.cur = cur
+    }
 }

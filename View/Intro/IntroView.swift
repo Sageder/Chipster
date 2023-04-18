@@ -11,6 +11,9 @@ struct IntroView: View {
             
             PageTwo()
                 .tag(1)
+            
+            PageThree()
+                .tag(2)
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .edgesIgnoringSafeArea(.all)
@@ -29,7 +32,7 @@ struct IntroView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
             }
             
-            if (selection + 1 <= 1) {
+            if (selection + 1 <= 2) {
                 Button {
                     withAnimation {
                         selection += 1

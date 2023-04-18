@@ -22,12 +22,12 @@ struct PageOne: View {
                 .frame(maxHeight: (geometry.size.width / 1900) * 1100)
                 
                 
-                Text("Modern chips like Apple's M2 are complex.")
+                Text("Modern chips like Apple's M2 are complex")
                     .font(.title)
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
                 
-                Text("They have different areas of the chip that serve different use cases and \(Text("billions of 2nd gen. 5nm transistors").bold()).")
+                Text("They have different areas of the chip that serve different use cases and billions of 2nd generation 5nm transistors.")
                     .font(.title3)
                     .multilineTextAlignment(.center)
                     .frame(width: 500)
@@ -38,8 +38,7 @@ struct PageOne: View {
                     .frame(width: 500)
                     .padding()
                 
-                Text("Let's build them 🔥")
-                    .font(.title2)
+                
                 
                 Spacer()
                 Spacer()

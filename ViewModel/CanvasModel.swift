@@ -10,6 +10,14 @@ class CanvasModel: ObservableObject {
     @Published var fromConnection: GateId?
     
     @Published var showAllDebug: Bool = false
+    @Published var blockInput: Bool = false
+    
+    func clear() {
+        reset()
+        resetConnection()
+        gates = []
+        connections = []
+    }
 }
 
 // For gates

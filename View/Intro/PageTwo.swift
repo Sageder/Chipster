@@ -63,6 +63,8 @@ struct PageTwo: View {
     @ViewBuilder
     func explainGate(_ gate: Gate)->some View {
         VStack(spacing: 20) {
+            Spacer()
+            
             GateWrapper(type: gate, numOfType: 0, offset: .zero)
                 .environmentObject(canvasModel)
                 .padding()
@@ -123,6 +125,8 @@ struct PageTwo: View {
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
             }
+            
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding()

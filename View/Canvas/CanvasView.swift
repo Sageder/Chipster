@@ -17,6 +17,10 @@ struct CanvasView: View {
                         .onTapGesture {
                             canvasModel.setCur(gate)
                             
+                            if canvasModel.blockInput {
+                                return
+                            }
+                            
                             if menuModel.cur == .rotate {
                                 withAnimation {
                                     canvasModel.rotateGate()
@@ -42,6 +46,10 @@ struct CanvasView: View {
                         .onTapGesture {
                             canvasModel.setCurConnection(c)
                             
+                            if canvasModel.blockInput {
+                                return
+                            }
+                            
                             if menuModel.cur == .erase {
                                 canvasModel.removeConnection()
                             }
@@ -51,6 +59,10 @@ struct CanvasView: View {
             .environmentObject(canvasModel)
             .contentShape(Rectangle())
             .onTapGesture { gesture in
+                if canvasModel.blockInput {
+                    return
+                }
+                
                 if (menuModel.cur.isPlacable) {
                     let offset = geometry.size.offsetFromMid(gesture)
                     canvasModel.addGate(Gate.from(item: menuModel.cur),
