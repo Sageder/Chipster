@@ -27,6 +27,34 @@ enum Gate {
             return .not
         }
     }
+    
+    static func all()->[Gate] {
+        return [
+            .in,
+            .out,
+            .not,
+            .and,
+            .or,
+            .xor
+        ]
+    }
+    
+    func getName()->String {
+        switch (self) {
+        case .in:
+            return "In"
+        case .out:
+            return "Out"
+        case .not:
+            return "Not"
+        case .and:
+            return "And"
+        case .or:
+            return "Or"
+        case .xor:
+            return "Xor"
+        }
+    }
 }
 
 struct GateIn: View {
@@ -52,7 +80,7 @@ struct GateIn: View {
                 .foregroundColor(Color.green)
                 .frame(width: GateIn.size,
                        height: GateIn.size)
-                .opacity(canvasModel.connecting ? canvasModel.fromConnection == parent ? 0 : 1 : 0)
+                .opacity(canvasModel.showAllDebug ? 1 : canvasModel.connecting ? canvasModel.fromConnection == parent ? 0 : 1 : 0)
                 .onTapGesture {
                     if (!canvasModel.checkForIn()) {
                         return
@@ -91,7 +119,7 @@ struct GateOut: View {
                 .foregroundColor(Color.red)
                 .frame(width: GateIn.size,
                        height: GateIn.size)
-                .opacity(canvasModel.connecting ? canvasModel.fromConnection == parent ? 1 : 0 : 1)
+                .opacity(canvasModel.showAllDebug ? 1 : canvasModel.connecting ? canvasModel.fromConnection == parent ? 1 : 0 : 1)
                 .onTapGesture {
                     canvasModel.setFromConnection(parent)
                     

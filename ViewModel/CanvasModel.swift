@@ -8,6 +8,8 @@ class CanvasModel: ObservableObject {
     @Published private var curConnection: ConnectionId?
     @Published var connecting: Bool = false
     @Published var fromConnection: GateId?
+    
+    @Published var showAllDebug: Bool = false
 }
 
 // For gates
