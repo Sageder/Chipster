@@ -14,7 +14,7 @@ struct GateWrapper: Identifiable, View {
     
     var rotation: Angle = .zero
     
-    @State var drag: DragModifier = .init()
+    @State var drag: DragModifier = .init() // TODO: make Binding
     
     @State var in0: Bool = false
     @State var in1: Bool = false
@@ -95,6 +95,7 @@ struct GateWrapper: Identifiable, View {
                                height:  GateWrapper.size)
                     
                     Text("Out\(numOfType)")
+                        .font(.title3)
                 }
             case .not:
                 NotShape()
