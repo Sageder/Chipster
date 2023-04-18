@@ -25,13 +25,14 @@ struct MenuView: View {
     @ViewBuilder
     func menuItem(_ item: MenuItem, size: CGFloat)->some View {
         VStack {
+            let isCur = menuModel.cur == item
+            
             Button {
                 withAnimation {
                     menuModel.cur = item
                 }
-            } label: { 
-                let isCur = menuModel.cur == item
-                let color = isCur ? Color.white : Color.white.opacity(0.7)
+            } label: {
+                let color = isCur ? Color.white : Color.white.opacity(0.6)
                 
                 if (item.isPlacable) {
                     item.shape()
@@ -56,6 +57,12 @@ struct MenuView: View {
                         .frame(width: size, height: size)
                         .foregroundColor(color)
                 }
+            }
+            
+            if isCur {
+                Circle()
+                    .foregroundColor(.white)
+                    .frame(width: 10, height: 10)
             }
         }
     }

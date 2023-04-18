@@ -163,10 +163,11 @@ extension CanvasModel {
     }
     
     func connectGates(from: GateId, to: GateId, toIndex: Int) {
-        let connection = GateConnection(from: from,
-                                        to: to,
-                                        toIndex: toIndex)
-        connections.append(connection)
+        let c = GateConnection(canvasModel: self,
+                               from: from,
+                               to: to,
+                               toIndex: toIndex)
+        connections.append(c)
     }
     
     func isConnectedIn(to gateId: GateId, index: Int)->Bool {

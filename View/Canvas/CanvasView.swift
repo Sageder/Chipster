@@ -34,15 +34,7 @@ struct CanvasView: View {
                 }
                 
                 ForEach(canvasModel.connections) { c in
-                    ConnectionShape(start: canvasModel.gatePos(id: c.from,
-                                                               to: false,
-                                                               toIndex: nil,
-                                                               size: geometry.size),
-                                    end: canvasModel.gatePos(id: c.to,
-                                                             to: true,
-                                                             toIndex: c.toIndex,
-                                                             size: geometry.size))
-                        .stroke(lineWidth: 2)
+                    c.view(size: geometry.size)
                         .onTapGesture {
                             canvasModel.setCurConnection(c)
                             

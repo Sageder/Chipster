@@ -71,13 +71,13 @@ struct GateIn: View {
     var body: some View {
         if (connected) {
             Circle()
-                .fill(Color.green)
+                .fill(Color.black)
                 .frame(width: GateIn.size,
                        height: GateIn.size)
         } else {
             Circle()
                 .stroke(lineWidth: 2)
-                .foregroundColor(Color.green)
+                .foregroundColor(Color.black)
                 .frame(width: GateIn.size,
                        height: GateIn.size)
                 .opacity(canvasModel.showAllDebug ? 1 : canvasModel.connecting ? canvasModel.fromConnection == parent ? 0 : 1 : 0)
@@ -110,13 +110,13 @@ struct GateOut: View {
     var body: some View {
         if (connected) {
             Circle()
-                .fill(Color.red)
+                .fill(Color.black)
                 .frame(width: GateIn.size,
                        height: GateIn.size)
         } else {
             Circle()
                 .stroke(lineWidth: 2)
-                .foregroundColor(Color.red)
+                .foregroundColor(Color.black)
                 .frame(width: GateIn.size,
                        height: GateIn.size)
                 .opacity(canvasModel.showAllDebug ? 1 : canvasModel.connecting ? canvasModel.fromConnection == parent ? 1 : 0 : 1)

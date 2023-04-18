@@ -129,6 +129,6 @@ struct GateWrapper: Identifiable, View {
 
 struct GateWrapper_Previews: PreviewProvider {
     static var previews: some View {
-        GateWrapper(type: .not, numOfType: 0, offset: .zero)
+        GateWrapper(canvasModel: .init(), type: .not, numOfType: 0, offset: .zero)
     }
 }

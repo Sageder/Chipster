@@ -41,7 +41,7 @@ struct PageThree: View {
                         .padding()
                     }
                 
-                Text("Tips & Tricks")
+                Text("Connections")
                     .font(.title)
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
@@ -51,7 +51,7 @@ struct PageThree: View {
                     .multilineTextAlignment(.center)
                     .frame(width: 500)
                 
-                Text("If you get stuck, try solving the logic for different out gates one at a time.")
+                Text("The color of the connection tells you wheter its \(Text("on (true)").foregroundColor(.green)) and \(Text("off (false)").foregroundColor(.red))")
                     .font(.title3)
                     .multilineTextAlignment(.center)
                     .frame(width: 500)

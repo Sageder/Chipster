@@ -94,7 +94,7 @@ struct PageTwo: View {
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
                 
-                Text("(The green circle represents the input and the red one the output)")
+                Text("(The circle on the left represents the input and the right one the output)")
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
             case .and:
@@ -103,7 +103,7 @@ struct PageTwo: View {
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
                 
-                Text("(The green circles represent the inputs and the red one the output)")
+                Text("(The circles on the left represent the inputs and the right one the output)")
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
             case .or:
@@ -112,7 +112,7 @@ struct PageTwo: View {
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
                 
-                Text("(The green circles represent the inputs and the red one the output)")
+                Text("(The circles on the left represent the inputs and the right one the output)")
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
             case .xor:
@@ -121,7 +121,7 @@ struct PageTwo: View {
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
                 
-                Text("(The green circles represent the inputs and the red one the output)")
+                Text("(The circles on the left represent the inputs and the right one the output)")
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
             }
