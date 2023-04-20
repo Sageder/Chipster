@@ -1,8 +1,14 @@
 import SwiftUI
 
 struct PageThree: View {
-    @StateObject var canvasModel: CanvasModel = .init()
-    @StateObject var menuModel: MenuModel = .init()
+    @ObservedObject var canvasModel: CanvasModel
+    @ObservedObject var menuModel: MenuModel
+    
+    init() {
+        menuModel = .init()
+        canvasModel = .init()
+        resetCanvas()
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -10,14 +16,12 @@ struct PageThree: View {
                 
                 Spacer()
                 
-                CanvasView(canvasModel: canvasModel, menuModel: menuModel)
+                CanvasView(menuModel: menuModel)
+                    .environmentObject(canvasModel)
                     .frame(maxHeight: (geometry.size.width / 1900) * 1100)
                     .background {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color.gray.opacity(0.1))
-                    }
-                    .onAppear {
-                        resetCanvas()
                     }
                     .overlay(alignment: .center) {
                         VStack {
@@ -35,13 +39,14 @@ struct PageThree: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 20, height: 20)
                                     .foregroundColor(.black)
+                                    .padding(3)
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                         }
                         .padding()
                     }
                 
-                Text("Connections")
+                Text("States & Connections")
                     .font(.title)
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
@@ -51,11 +56,10 @@ struct PageThree: View {
                     .multilineTextAlignment(.center)
                     .frame(width: 500)
                 
-                Text("The color of the connection tells you wheter its \(Text("on (true)").foregroundColor(.green)) and \(Text("off (false)").foregroundColor(.red))")
+                Text("As already mentioned, you can change the input bits by pressing the colored buttons on IN gates. In general, the color tells you whether something \(Text("on (true)").foregroundColor(.green)) and \(Text("off (false)").foregroundColor(.red)).")
                     .font(.title3)
                     .multilineTextAlignment(.center)
                     .frame(width: 500)
-                    
                 
                 Text("Have fun! 🥳")
                     .font(.title3)
@@ -71,26 +75,14 @@ struct PageThree: View {
         }
     }
     
-    @ViewBuilder
-    func imageView(_ image: String, url: String)->some View {
-        VStack {
-            Image(image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .padding()
-            
-            Link("Credit: Apple Inc.", destination: URL(string: url)!)
-        }
-    }
-    
     func resetCanvas() {
         canvasModel.clear()
         canvasModel.blockInput = true
-        canvasModel.addGate(.in, offset: CGSize(width: -200, height: 50))
-        canvasModel.addGate(.in, offset: CGSize(width: -200, height: -50))
-        canvasModel.addGate(.xor, offset: CGSize(width: 0, height: 0))
-        canvasModel.addGate(.out, offset: CGSize(width: 200, height: 0))
+        canvasModel.addGate(type: .in, offset: CGPoint(x: -300, y: 75))
+        canvasModel.addGate(type: .in, offset: CGPoint(x: -300, y: -75))
+        canvasModel.addGate(type: .not, offset: CGPoint(x: -125, y: -50))
+        canvasModel.addGate(type: .xor, offset: CGPoint(x: 50, y: 0))
+        canvasModel.addGate(type: .out, offset: CGPoint(x: 250, y: 0))
     }
 }
 

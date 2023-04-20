@@ -1,26 +1,33 @@
 import SwiftUI
 
 struct PageOne: View {
+    let credit = "Apple Inc."
+    let url = "https://www.apple.com/newsroom/2022/06/apple-unveils-m2-with-breakthrough-performance-and-capabilities/"
+    
     var body: some View {
         GeometryReader { geometry in
-            VStack(alignment: .center, spacing: 20) {
-                
+            VStack(spacing: 20) {
                 Spacer()
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        imageView("M2", url: "https://www.apple.com/newsroom/2022/06/apple-unveils-m2-with-breakthrough-performance-and-capabilities/")
-                            .frame(maxWidth: geometry.size.width)
+                        ImageView(image: "M2",
+                                  credit: credit,
+                                  url: url)
+                        .frame(maxWidth: geometry.size.width)
                         
-                        imageView("M2-Memory", url: "https://www.apple.com/newsroom/2022/06/apple-unveils-m2-with-breakthrough-performance-and-capabilities/")
-                            .frame(maxWidth: geometry.size.width)
+                        ImageView(image: "M2-Memory",
+                                  credit: credit,
+                                  url: url)
+                        .frame(maxWidth: geometry.size.width)
                         
-                        imageView("M2-Transistors", url: "https://www.apple.com/newsroom/2022/06/apple-unveils-m2-with-breakthrough-performance-and-capabilities/")
-                            .frame(maxWidth: geometry.size.width)
+                        ImageView(image: "M2-Transistors",
+                                  credit: credit,
+                                  url: url)
+                        .frame(maxWidth: geometry.size.width)
                     }
                 }
                 .frame(maxHeight: (geometry.size.width / 1900) * 1100)
-                
                 
                 Text("Modern chips like Apple's M2 are complex")
                     .font(.title)
@@ -38,26 +45,8 @@ struct PageOne: View {
                     .frame(width: 500)
                     .padding()
                 
-                
-                
                 Spacer()
-                Spacer()
-                
             }
-            .padding()
-        }
-    }
-    
-    @ViewBuilder
-    func imageView(_ image: String, url: String)->some View {
-        VStack {
-            Image(image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .padding()
-            
-            Link("Credit: Apple Inc.", destination: URL(string: url)!)
         }
     }
 }

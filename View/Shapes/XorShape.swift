@@ -29,10 +29,10 @@ struct XorShape: Shape {
         let circleSize = size * 0.5
         let circlePath = Path { path in
             path.addArc(center: CGPoint(x: rect.minX + twoHalfCurveCubeWidth,
-                                        y: rect.maxY - circleSize), 
-                        radius: circleSize, 
-                        startAngle: .degrees(90), 
-                        endAngle: .degrees(270), 
+                                        y: rect.maxY - circleSize),
+                        radius: circleSize,
+                        startAngle: .degrees(90),
+                        endAngle: .degrees(270),
                         clockwise: true)
         }
         

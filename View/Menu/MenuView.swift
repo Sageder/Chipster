@@ -12,7 +12,7 @@ struct MenuView: View {
             Divider()
                 .background(Color.white)
                 .frame(height: 40)
-                
+            
             ForEach(MenuItem.actionables()) { item in
                 menuItem(item, size: 35)
             }
@@ -67,4 +67,3 @@ struct MenuView: View {
         }
     }
 }
-

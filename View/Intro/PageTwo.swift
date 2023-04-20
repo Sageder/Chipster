@@ -1,12 +1,16 @@
 import SwiftUI
 
 struct PageTwo: View {
-    @State var currentGate: Gate = .in
-    @State var canvasModel: CanvasModel
+    @State var currentGate: GateType = .in
+    @ObservedObject var canvasModel: CanvasModel
+    @ObservedObject var menuModel: MenuModel
     
     init() {
+        menuModel = .init()
         canvasModel = .init()
         canvasModel.showAllDebug = true
+        canvasModel.blockInput = true
+        reset()
     }
     
     var body: some View {
@@ -27,12 +31,15 @@ struct PageTwo: View {
                     .frame(width: 450)
                 
                 HStack {
-                    ForEach(Gate.all(), id: \.self) { gate in
+                    ForEach(GateType.all(), id: \.self) { gate in
                         let isCur = gate == currentGate
                         
                         Button {
                             withAnimation {
-                                currentGate = gate
+                                if currentGate != gate {
+                                    currentGate = gate
+                                    reset()
+                                }
                             }
                         } label: {
                             Text(gate.getName())
@@ -52,7 +59,6 @@ struct PageTwo: View {
                     }
                 }
                 
-                
                 Spacer()
                 Spacer()
             }
@@ -60,19 +66,30 @@ struct PageTwo: View {
         }
     }
     
+    func reset() {
+        canvasModel.clear()
+        canvasModel.addGate(type: currentGate, offset: .zero)
+    }
+}
+
+extension PageTwo {
     @ViewBuilder
-    func explainGate(_ gate: Gate)->some View {
+    func explainGate(_ gate: GateType)->some View {
         VStack(spacing: 20) {
             Spacer()
             
-            GateWrapper(type: gate, numOfType: 0, offset: .zero)
+            CanvasView(menuModel: menuModel)
                 .environmentObject(canvasModel)
-                .padding()
+                .frame(maxWidth: 200, maxHeight: 200)
             
             switch (gate) {
             case .in:
                 Text("The \(Text("IN").bold()) gate represents the input to a logic circuit. It can have one or more inputs, and it is the starting point for any logical operation.")
                     .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+                
+                Text("You can change the input by pressing the \(Text("colored button").foregroundColor(canvasModel.gates[0].getOut() ? .green : .red)).")
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
                 
@@ -82,6 +99,10 @@ struct PageTwo: View {
             case .out:
                 Text("The \(Text("OUT").bold()) gate represents the output of a logic circuit. It can have one or more outputs, and it represents the final result of a logical operation.")
                     .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 450)
+                
+                Text("This time, the \(Text("colored button").foregroundColor(.red)) just shows you the output, it isn't pressable.")
                     .multilineTextAlignment(.center)
                     .frame(width: 450)
                 
@@ -126,6 +147,7 @@ struct PageTwo: View {
                     .frame(width: 450)
             }
             
+            Spacer()
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)

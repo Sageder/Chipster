@@ -30,4 +30,3 @@ struct NotShape_Previews: PreviewProvider {
         GateShape_Preview.preview(gate: NotShape(), frame: true)
     }
 }
-

@@ -21,9 +21,9 @@ struct AndShape: Shape {
         let circlePath = Path { path in
             path.addArc(center: CGPoint(x: rect.minX + cubeWidth,
                                         y: rect.maxY - circleSize),
-                        radius: circleSize, 
-                        startAngle: .degrees(90), 
-                        endAngle: .degrees(270), 
+                        radius: circleSize,
+                        startAngle: .degrees(90),
+                        endAngle: .degrees(270),
                         clockwise: true)
         }
         

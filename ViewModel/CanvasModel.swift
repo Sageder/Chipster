@@ -1,11 +1,9 @@
 import SwiftUI
 
 class CanvasModel: ObservableObject {
-    @Published var gates: [GateWrapper] = []
-    @Published private var cur: GateId?
+    @Published var gates: [Gate] = []
+    @Published var connections: [Connection] = []
     
-    @Published var connections: [GateConnection] = []
-    @Published private var curConnection: ConnectionId?
     @Published var connecting: Bool = false
     @Published var fromConnection: GateId?
     
@@ -13,80 +11,40 @@ class CanvasModel: ObservableObject {
     @Published var blockInput: Bool = false
     
     func clear() {
-        reset()
-        resetConnection()
         gates = []
         connections = []
+        resetConnection()
     }
 }
 
-// For gates
 extension CanvasModel {
-    func setCur(_ cur: GateWrapper) {
-        self.cur = cur.id
-    }
-    
-    func reset() {
-        cur = nil
-    }
-    
-    func addGate(_ type: Gate, offset: CGSize) {
-        gates.append(GateWrapper(type: type,
-                                 numOfType: getGateTypeNum(type),
-                                 offset: offset))
-    }
-    
-    func rotateGate() {
-        let i = getIndexOfGate(cur)
-        if i == -1 {
-            return
+    func getGateIndex(_ id: GateId)->Int {
+        guard let i = gates.firstIndex(where: {
+            id == $0.id
+        }) else {
+            return -1
         }
         
+        return i
+    }
+    
+    func addGate(type: GateType, offset: CGPoint) {
+        gates.append(Gate(type: type,
+                          num: getNum(type),
+                          offset: offset))
+    }
+    
+    func rotateGateIndex(_ i: Int) {
         let rot = gates[i].rotation.degrees + 90
         gates[i].rotation = Angle(degrees: rot)
     }
     
-    func removeGate() {
-        let i = getIndexOfGate(cur)
-        if i == -1 {
-            return
-        }
-        
-        let id = gates[i].id
-        removeConnections(gateId: id)
-        
+    func removeGateIndex(_ i: Int) {
+        removeConnections(gates[i].id)
         gates.remove(at: i)
-        reset()
     }
-    
-    func verifyGate(id: GateId)->Bool {
-        return gates.contains(where: { $0.id == id })
-    }
-    
-    func getGate(id: GateId)->GateWrapper? {
-        return gates.first { $0.id == id }
-    }
-    
-    func gateOffset(id: GateId, to: Bool, toIndex: Int?)->CGPoint {
-        let i = getIndexOfGate(id)
-        if (i == -1) {
-            return .zero
-        }
-        
-        var off = gates[i].drag.offset
-        off.x += gates[i].offset.width
-        off.y += gates[i].offset.height
-        return off
-    }
-    
-    func gatePos(id: GateId, to: Bool, toIndex: Int?, size: CGSize)->CGPoint {
-        let off = gateOffset(id: id,
-                             to: to,
-                             toIndex: toIndex)
-        return off.pointFromOffset(size)
-    }
-    
-    func getGateTypeNum(_ type: Gate)->Int {
+
+    func getNum(_ type: GateType)->Int {
         var i = 0;
         
         for gate in gates {
@@ -98,13 +56,84 @@ extension CanvasModel {
         return i
     }
     
-    /// Returns -1 if gate wasn't found
-    private func getIndexOfGate(_ id: GateId?)->Int {
-        if (id == nil) {
-            return -1
+    func verifyGate(id: GateId)->Bool {
+        return gates.contains(where: { $0.id == id })
+    }
+    
+    func gateOffset(id: GateId, to: Bool, toIndex: Int?)->CGPoint {
+        let i = getGateIndex(id)
+        if (i == -1) {
+            return .zero
         }
         
-        guard let i = gates.firstIndex(where: {
+        var offset = gates[i].offset
+        
+        let deltaX = Gate.size / 2 + 30
+        let plusX: CGFloat = gates[i].type == .in || gates[i].type == .out ? 10 : 0
+        let deltaY: CGFloat = 18
+        
+        // TODO: Refactor
+        // this is currently a mess, but it works 🤣
+        // outer ifs check rotation
+        // inner ifs determine wheter it's a GateIn 0, GateIn 1 or a GateOut
+        // then it adds the delta offset from the center of the gate
+        if Int(gates[i].rotation.degrees) % 360 == 0 {
+            if toIndex == nil {
+                offset.x += deltaX + plusX
+            } else if toIndex! == 0 {
+                offset.x -= deltaX + plusX
+                if gates[i].usesIn1() {
+                    offset.y -= deltaY
+                }
+            } else if toIndex! == 1 {
+                offset.x -= deltaX
+                offset.y += deltaY
+            }
+        } else if Int(gates[i].rotation.degrees) % 360 == 90 {
+            if toIndex == nil {
+                offset.y += deltaX + plusX
+            } else if toIndex! == 0 {
+                offset.y -= deltaX + plusX
+                if gates[i].usesIn1() {
+                    offset.x += deltaY
+                }
+            } else if toIndex! == 1 {
+                offset.y -= deltaX
+                offset.x -= deltaY
+            }
+        } else if Int(gates[i].rotation.degrees) % 360 == 180 {
+            if toIndex == nil {
+                offset.x -= deltaX + plusX
+            } else if toIndex! == 0 {
+                offset.x += deltaX + plusX
+                if gates[i].usesIn1() {
+                    offset.y += deltaY
+                }
+            } else if toIndex! == 1 {
+                offset.x += deltaX
+                offset.y -= deltaY
+            }
+        } else if Int(gates[i].rotation.degrees) % 360 == 270 {
+            if toIndex == nil {
+                offset.y -= deltaX + plusX
+            } else if toIndex! == 0 {
+                offset.y += deltaX + plusX
+                if gates[i].usesIn1() {
+                    offset.x -= deltaY
+                }
+            } else if toIndex! == 1 {
+                offset.y += deltaX
+                offset.x += deltaY
+            }
+        }
+        
+        return offset
+    }
+}
+
+extension CanvasModel {
+    func getConnectionIndex(_ id: ConnectionId)->Int {
+        guard let i = connections.firstIndex(where: {
             id == $0.id
         }) else {
             return -1
@@ -112,67 +141,29 @@ extension CanvasModel {
         
         return i
     }
-}
-
-// For connections
-extension CanvasModel {
-    func setCurConnection(_ cur: GateConnection) {
-        self.curConnection = cur.id
-    }
     
-    func setFromConnection(_ from: GateId) {
-        fromConnection = from
-    }
-    
-    func resetConnection() {
-        curConnection = nil
-        connecting = false
-        fromConnection = nil
-    }
-    
-    func fromInConnections(from: GateId)->Bool {
-        return connections.contains(where: { $0.from == from })
-    }
-    
-    func toInConnections(to: GateId)->Bool {
-        return connections.contains(where: { $0.to == to })
-    }
-    
-    func removeConnection() {
-        let i = getIndexOfConnection(curConnection)
-        if i == -1 {
-            return
-        }
-        
-        connections.remove(at: i)
-    }
-    
-    func removeConnections(gateId: GateId) {
-        for c in connections {
-            if (c.from == gateId ||
-                c.to == gateId) {
-                setCurConnection(c)
-                removeConnection()
-                resetConnection()
+    func removeConnections(_ id: GateId) {
+        for i in connections.indices {
+            if connections[i].from == id ||
+                connections[i].to == id {
+                removeConnectionIndex(i)
             }
         }
     }
     
-    func verifyConnection(id: ConnectionId)->Bool {
-        return connections.contains(where: { $0.id == id })
+    func removeConnectionIndex(_ i: Int) {
+        connections.remove(at: i)
     }
     
     func connectGates(from: GateId, to: GateId, toIndex: Int) {
-        let c = GateConnection(canvasModel: self,
-                               from: from,
-                               to: to,
-                               toIndex: toIndex)
-        connections.append(c)
+        connections.append(Connection(from: from,
+                                      to: to,
+                                      toIndex: toIndex))
     }
     
     func isConnectedIn(to gateId: GateId, index: Int)->Bool {
         for c in connections {
-            if (c.to == gateId && c.toIndex == index) {
+            if c.to == gateId && c.toIndex == index {
                 return true
             }
         }
@@ -182,7 +173,7 @@ extension CanvasModel {
     
     func isConnectedOut(to gateId: GateId)->Bool {
         for c in connections {
-            if (c.from == gateId) {
+            if c.from == gateId {
                 return true
             }
         }
@@ -201,18 +192,19 @@ extension CanvasModel {
         return true
     }
     
-    /// Returns -1 if connection wasn't found
-    private func getIndexOfConnection(_ id: ConnectionId?)->Int {
-        if (id == nil) {
-            return -1
-        }
-        
-        guard let i = connections.firstIndex(where: {
-            id == $0.id
-        }) else {
-            return -1
-        }
-        
-        return i
+    func resetConnection() {
+        connecting = false
+        fromConnection = nil
+    }
+    
+    func verifyConnection(id: ConnectionId)->Bool {
+        return connections.contains(where: { $0.id == id })
+    }
+    
+    func gatePos(id: GateId, to: Bool, toIndex: Int?, size: CGSize)->CGPoint {
+        let off = gateOffset(id: id,
+                             to: to,
+                             toIndex: toIndex)
+        return off.pointFromOffset(size)
     }
 }
