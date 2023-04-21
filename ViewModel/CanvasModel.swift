@@ -143,12 +143,7 @@ extension CanvasModel {
     }
     
     func removeConnections(_ id: GateId) {
-        for i in connections.indices {
-            if connections[i].from == id ||
-                connections[i].to == id {
-                removeConnectionIndex(i)
-            }
-        }
+        connections.removeAll(where: { $0.to == id || $0.from == id })
     }
     
     func removeConnectionIndex(_ i: Int) {
